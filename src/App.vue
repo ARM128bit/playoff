@@ -11,6 +11,7 @@
       value="Сформировать сетку"
       @click="createTournamentTree"
     />
+    {{ rounds.root }}
     <div class="tournament-grid">
       <div class="gamer-list">
         <draggable
@@ -23,7 +24,7 @@
           <Gamer v-for="(item, index) in gamers" :key="index" :gamer="item" />
         </draggable>
       </div>
-      <Rounds :grid="tournamentGrid" />
+      <Rounds :grid="{}" />
     </div>
   </div>
 </template>
@@ -31,6 +32,7 @@
 import Rounds from "./components/Rounds.vue";
 import Gamer from "./components/Gamer.vue";
 import Gamers from "./assets/js/gamers";
+import binaryTree from "./assets/js/binaryTree";
 /*import tournamentTree from "./assets/js/tournamentTree";*/
 
 export default {
@@ -54,12 +56,16 @@ export default {
     },
     createTournamentTree() {
       const _step = 2;
-      const _tourCount = Math.log2(this.roundsCount) + 1;
+      const _tourCount = Math.log2(this.roundsCount);
       const _sum = (1 - Math.pow(_step, _tourCount)) / (1 - _step);
-      console.log(_sum);
-      /*for (let i = 0; i < _sum; i++) {
+      let _binaryTree = new binaryTree();
+      let _arr = [];
+      for (let i = 0; i < _sum; i++) {
+        _arr.push(i + 1);
+      }
 
-      }*/
+      this.rounds = _binaryTree.insert(_arr);
+      console.log(_binaryTree);
     },
   },
   mounted() {
